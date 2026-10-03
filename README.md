@@ -1,54 +1,104 @@
-# Cloud-Threat-Detection (AWS - Splunk)
+# ☁️ Cloud Threat Detection Lab (AWS → Splunk)
 
+**End-to-end SOC lab that ingests AWS logs into Splunk, simulates real cloud attacks, and detects them with MITRE ATT&CK–mapped SPL rules.**
 
-Phase 0 — Setup & Safety
+This project builds the full detection loop a SOC analyst works in: **log ingestion → attack simulation → detection engineering → investigation → response.** AWS telemetry (CloudTrail, VPC Flow Logs, GuardDuty, S3 access logs) flows into Splunk, attacks are generated with Stratus Red Team, and each is caught by a custom detection mapped to MITRE ATT&CK and surfaced on a SOC-style dashboard.
 
-- Create a dedicated AWS account (isolated from anything real)
-- Set a billing alarm and a budget cap
-- Confirm Splunk is running and licensed (free tier = 500MB/day, plan around it)
-- Create an IAM user/role for Splunk with least-privilege read access to logs
+---
 
-Phase 1 — Log Sources (get data flowing)
+## 🧱 Architecture
 
-- Enable CloudTrail (management + data events)
-- Enable VPC Flow Logs
-- Turn on GuardDuty
-- Enable S3 access logging on a target bucket
-- Optionally: IAM Access Analyzer, Config
+```
+   ATTACK SIDE                      LOG SIDE                      SPLUNK SIDE
+   ----------                       --------                      -----------
 
-Phase 2 — Ingestion (AWS → Splunk)
+  Stratus Red Team
+  (simulated attacks)
+        |
+        v
+  ┌──────────────┐   activity   ┌──────────────────┐
+  │ crown-jewels │────────────► │ CloudTrail       │
+  │ (target)     │              │ VPC Flow Logs    │
+  │ fake secrets │              │ GuardDuty        │
+  └──────────────┘              └──────────────────┘
+                                        │ write logs
+                                        v
+                                ┌──────────────────┐
+                                │  S3 buckets      │
+                                └──────────────────┘
+                                        │ ObjectCreated
+                                        v
+                                ┌──────────────────┐
+                                │  SNS topic       │
+                                └──────────────────┘
+                                        │
+                                        v
+                                ┌──────────────────┐   pull    ┌──────────┐
+                                │  SQS queue       │ ◄──────── │  Splunk  │
+                                └──────────────────┘           │  Add-on  │
+                                                                └──────────┘
+                                                                     │
+                                                                     v
+                                                        Detections → Dashboard
+                                                        → Incident reports
+```
 
-- Install the Splunk Add-on for AWS
-- Configure inputs (SQS-based S3 pull is the standard path for CloudTrail/flow logs)
-- Verify each source is indexed and fields are parsing correctly (CIM compliance)
-- Build a simple "data health" check search
+**Flow in one line:** attack the target → AWS log services record it to S3 → S3 notifies SNS → SNS fans out to SQS → the Splunk Add-on for AWS pulls from SQS → detections fire → investigate and respond.
 
-Phase 3 — Attack Simulation
+---
 
-- Install Stratus Red Team
-- Run scenarios one at a time, e.g.:
-- IAM backdoor user / access key creation
-- Privilege escalation
-- S3 data exfiltration
-- CloudTrail tampering (stop/delete trail)
-- Console login from unusual location
-- Log the timestamp of each attack so you can confirm detection
+## 🛠️ Stack
 
-Phase 4 — Detection Engineering
+AWS (CloudTrail, VPC Flow Logs, GuardDuty, S3, SNS, SQS, IAM) · Splunk Enterprise · Splunk Add-on for AWS · Stratus Red Team · MITRE ATT&CK · SPL
 
-- Write an SPL detection for each attack scenario
-- Tune out false positives
-- Map every detection to a MITRE ATT&CK technique (build a coverage table)
-- Save each as a Splunk alert with severity + description
+---
 
-Phase 5 — Dashboards & Investigation
+## 📂 Repository layout
 
-- Build a SOC-style dashboard (alerts over time, top source IPs, attacker activity, MITRE coverage)
-- Write an incident report per scenario: what happened, how you detected it, timeline, impact, response
+| Path | What's in it |
+|---|---|
+| `detections/` | SPL detection rules, one file per technique |
+| `incident-reports/` | Per-attack investigation write-ups |
+| `iam-policies/` | Least-privilege IAM and resource policies used in the build |
+| `docs/` | Setup guide, MITRE coverage table, architecture notes |
 
-Phase 6 — Package for Recruiters
+---
 
-- GitHub repo with README: architecture diagram, detection→MITRE table, dashboard screenshots, incident reports
-- Store detections as code (SPL/Sigma files)
-Optional: Terraform to make the whole lab reproducible
-3–5 min demo video + LinkedIn post + resume bullet
+## 🔎 Detections
+
+| Detection | MITRE technique | Log source |
+|---|---|---|
+| Backdoor IAM admin user created | T1136.003 – Create Account: Cloud Account | CloudTrail |
+| CloudTrail logging stopped | T1562.001 – Impair Defenses: Disable Logging | CloudTrail |
+| *(more as the lab grows)* | | |
+
+See [`docs/mitre-coverage.md`](docs/mitre-coverage.md) for the full mapping.
+
+---
+
+## 🧪 How attacks are generated
+
+Attacks are simulated with [Stratus Red Team](https://github.com/DataDog/stratus-red-team) against an **isolated lab AWS account**. Each attack follows the same loop:
+
+```bash
+stratus detonate <attack-id>   # perform the attack
+# ... confirm detection fires in Splunk ...
+stratus cleanup <attack-id>    # tear down what was created
+```
+
+---
+
+## ⚠️ Safety & cost notes
+
+- Runs in a **dedicated lab AWS account**, isolated from anything real.
+- A **billing alarm / budget** is set to catch unexpected spend.
+- All "sensitive" data in the target bucket is **fake** (placeholder values only).
+- **No real credentials are committed** — see [`.gitignore`](.gitignore). Any access key shown in screenshots belongs to a short-lived Stratus resource and is destroyed at cleanup.
+
+---
+
+## 👤 Author
+
+**Niharika Umrani** — Cybersecurity professional (SOC / detection engineering)
+CompTIA Security+ · Columbia, MD
+[LinkedIn](https://linkedin.com/in/niharikaumrani) · [GitHub](https://github.com/niha-v)
