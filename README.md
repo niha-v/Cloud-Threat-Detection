@@ -100,5 +100,5 @@ stratus cleanup <attack-id>    # tear down what was created
 ## 👤 Author
 
 **Niharika Umrani** — Cybersecurity professional (SOC / detection engineering)
-CompTIA Security+ · Columbia, MD
+CompTIA Security+ 
 [LinkedIn](https://linkedin.com/in/niharikaumrani) · [GitHub](https://github.com/niha-v)
