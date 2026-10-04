@@ -3,6 +3,8 @@
 **MITRE ATT&CK:** T1136.003 – Create Account: Cloud Account
 (supporting: T1098 – Account Manipulation)
 
+<img src = "https://github.com/niha-v/Cloud-Threat-Detection/blob/main/Image/01.png" width = 1000>
+
 **Log source:** AWS CloudTrail
 **Severity:** High
 
