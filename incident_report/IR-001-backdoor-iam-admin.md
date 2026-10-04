@@ -9,6 +9,10 @@
 | **Status** | Resolved (lab) |
 
 ---
+<img src = "https://github.com/niha-v/Cloud-Threat-Detection/blob/main/Image/02.png" width = 1000>
+
+
+
 
 ## Summary
 
