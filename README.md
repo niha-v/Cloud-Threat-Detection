@@ -2,7 +2,9 @@
 
 **End-to-end SOC lab that ingests AWS logs into Splunk, simulates real cloud attacks, and detects them with MITRE ATT&CK–mapped SPL rules.**
 
-This project builds the full detection loop a SOC analyst works in: **log ingestion → attack simulation → detection engineering → investigation → response.** AWS telemetry (CloudTrail, VPC Flow Logs, GuardDuty, S3 access logs) flows into Splunk, attacks are generated with Stratus Red Team, and each is caught by a custom detection mapped to MITRE ATT&CK and surfaced on a SOC-style dashboard.
+This project builds the full detection loop a SOC analyst works in: 
+- **log ingestion → attack simulation → detection engineering → investigation → response.**
+- AWS telemetry (CloudTrail, VPC Flow Logs, GuardDuty, S3 access logs) flows into Splunk, attacks are generated with Stratus Red Team, and each is caught by a custom detection mapped to MITRE ATT&CK and surfaced on a SOC-style dashboard.
 
 ---
 
@@ -43,7 +45,8 @@ This project builds the full detection loop a SOC analyst works in: **log ingest
                                                         → Incident reports
 ```
 
-**Flow in one line:** attack the target → AWS log services record it to S3 → S3 notifies SNS → SNS fans out to SQS → the Splunk Add-on for AWS pulls from SQS → detections fire → investigate and respond.
+**Flow in one line:** 
+- attack the target → AWS log services record it to S3 → S3 notifies SNS → SNS fans out to SQS → the Splunk Add-on for AWS pulls from SQS → detections fire → investigate and respond.
 
 ---
 
@@ -100,5 +103,5 @@ stratus cleanup <attack-id>    # tear down what was created
 ## 👤 Author
 
 **Niharika Umrani** — Cybersecurity professional (SOC / detection engineering)
-CompTIA Security+ · Columbia, MD
+CompTIA Security+
 [LinkedIn](https://linkedin.com/in/niharikaumrani) · [GitHub](https://github.com/niha-v)
