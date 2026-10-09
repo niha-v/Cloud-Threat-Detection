@@ -3,8 +3,11 @@
 **End-to-end SOC lab that ingests AWS logs into Splunk, simulates real cloud attacks and detects them with MITRE ATT&CK–mapped SPL rules.**
 
 This project builds the full detection loop a SOC analyst works in: 
-- **log ingestion → attack simulation → detection engineering → investigation → response.**
+- **Log Ingestion → Attack Simulation → Detection Engineering → Investigation → Response.**
 - AWS telemetry (CloudTrail, VPC Flow Logs, GuardDuty, S3 access logs) flows into Splunk, attacks are generated with Stratus Red Team and each is caught by a custom detection mapped to MITRE ATT&CK and surfaced on a SOC-style dashboard.
+
+
+<img src = "https://github.com/niha-v/Cloud-Threat-Detection/blob/main/Image/splunk_dash01.png" width =900>
 
 ---
 
@@ -46,7 +49,7 @@ This project builds the full detection loop a SOC analyst works in:
 ```
 
 **Flow in one line:** 
-- attack the target → AWS log services record it to S3 → S3 notifies SNS → SNS fans out to SQS → the Splunk Add-on for AWS pulls from SQS → detections fire → investigate and respond.
+- Attack the target → AWS log services record it to S3 → S3 notifies SNS → SNS fans out to SQS → the Splunk Add-on for AWS pulls from SQS → detections fire → investigate and respond.
 
 ---
 
