@@ -9,6 +9,7 @@
 | **Status** | Resolved (lab) |
 
 ---
+<img src = "https://github.com/niha-v/Cloud-Threat-Detection/blob/main/Image/02.png" width = 1000>
 
 ## Summary
 
@@ -48,6 +49,9 @@ index=main eventName=StopLogging
 
 The dashboard's "Logging tampering" tile turned red and the MITRE table listed
 `T1562.008 Disable or Modify Cloud Logs` with a count of 2.
+
+<img src = "https://github.com/niha-v/Cloud-Threat-Detection/blob/main/Image/02_dash.png" width = 1000>
+
 
 ## Analysis
 
