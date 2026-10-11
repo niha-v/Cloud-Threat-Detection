@@ -1,0 +1,23 @@
+# Never commit AWS credentials
+*.csv
+credentials
+credentials.*
+*accessKeys*
+*access_key*
+*secret*
+.aws/
+aws_credentials*
+
+# Splunk local config that may contain keys
+*passwords.conf
+*/local/*.conf
+
+# Stratus state
+.stratus-red-team/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
