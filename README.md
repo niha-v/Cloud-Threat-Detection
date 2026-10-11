@@ -7,7 +7,8 @@ This project builds the full detection loop a SOC analyst works in:
 - AWS telemetry (CloudTrail, VPC Flow Logs, GuardDuty, S3 access logs) flows into Splunk, attacks are generated with Stratus Red Team and each is caught by a custom detection mapped to MITRE ATT&CK and surfaced on a SOC-style dashboard.
 
 
-<img src = "https://github.com/niha-v/Cloud-Threat-Detection/blob/main/Image/splunk_dash01.png" width =900>
+
+<img src = "https://github.com/niha-v/Cloud-Threat-Detection/blob/main/Image/splunk_dash02.png" width =900>
 
 ---
 
@@ -79,6 +80,8 @@ AWS (CloudTrail, VPC Flow Logs, GuardDuty, S3, SNS, SQS, IAM) · Splunk Enterpri
 | *(more as the lab grows)* | | |
 
 See [`docs/mitre-coverage.md`](docs/mitre-coverage.md) for the full mapping.
+
+<img src = "https://github.com/niha-v/Cloud-Threat-Detection/blob/main/Image/splunk_dash03.png" width =900>
 
 ---
 
